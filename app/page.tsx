@@ -3,13 +3,11 @@ import { ChangeEvent, useState } from "react";
 import Papa, { ParseResult } from "papaparse";
 
 export default function main() {
-    const [fileName, setFileName] = useState<string | null>(null);
     const [displayData, setDisplayData] = useState<any[]>([]);
 
     const [showData, setShowData] = useState<Boolean>(false);
 
     function cancelFile() {
-        setFileName(null); // Clear the file name
         const fileInput = document.getElementById("csv") as HTMLInputElement;
         if (fileInput) {
             fileInput.value = ""; // Clear the input value
@@ -20,11 +18,11 @@ export default function main() {
         const file: File | undefined = e.target.files?.[0];
 
         if (file) {
-            setFileName(file.name); // Set the file name in state
             Papa.parse(file, {
                 header: true,
                 skipEmptyLines: true,
                 complete: (results) => {
+                    console.log(results)
                     sendDataToBackend(results);
                 },
             })
